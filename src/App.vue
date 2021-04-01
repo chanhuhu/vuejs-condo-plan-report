@@ -1,32 +1,115 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <v-card flat>
+      <div>
+
+        <v-toolbar
+          flat
+          color="blue"
+        >
+          <v-btn
+            v-if="$route.fullPath.includes('/projects/')"
+            @click="$router.go(-1)"
+            icon
+            color="white"
+          >
+            <v-icon
+              dense
+            >mdi-arrow-left
+            </v-icon>
+          </v-btn>
+          <v-btn
+            v-if="$route.fullPath.includes('/floor_plans')"
+            @click="$router.go(-1)"
+            icon
+            color="white"
+          >
+            <v-icon
+              dense
+            >mdi-arrow-left
+            </v-icon>
+          </v-btn>
+          <v-toolbar-title class="grey--text">
+            <div style="color: white">แอปสำหรับการจัดการแปลนคอนโด</div>
+          </v-toolbar-title>
+        </v-toolbar>
+      </div>
+
+
+    </v-card>
+
+    <v-main>
+      <v-container>
+
+        <v-form
+          ref="form"
+          @submit.prevent="clickToCreateProject"
+          v-model="valid"
+          lazy-validation
+        >
+          <v-row justify="space-between" align="center">
+
+            <v-col>
+
+              <v-text-field
+                type="text"
+                v-on:keydown.enter.prevent="clickToCreateProject"
+                v-model="newProject"
+                :rules="newProjectRules"
+                label="ชื่อโครงการใหม่"
+                required
+              ></v-text-field>
+            </v-col>
+
+            <v-col>
+
+              <v-btn
+                :disabled="!valid"
+                color="success"
+                class="mr-4"
+                @click="clickToCreateProject"
+              >
+                สร้างโครงการใหม่
+              </v-btn>
+            </v-col>
+          </v-row>
+
+        </v-form>
+      </v-container>
+
+    </v-main>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import {mapActions} from 'vuex'
 
-#nav {
-  padding: 30px;
-}
+export default {
+  name: 'App',
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+  data: () => ({
+    valid: true,
+    newProject: 'site 1',
+    newProjectRules: [
+      v => !!v || 'Name is required',
+    ],
+  }),
+  methods: {
+    ...mapActions('project', ["createProject", "getProjects", 'renameProject', "getProject"]),
+    clickToCreateProject: async function () {
+      await this.$refs.form.validate()
+      await this.createProject({
+        name: this.newProject
+      })
+      await this.$refs.form.reset()
+    }
+  },
+  computed: {},
+  mounted() {
+  },
+  created() {
+    this.getProjects();
+  }
+};
+</script>
