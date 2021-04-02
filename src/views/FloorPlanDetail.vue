@@ -155,7 +155,7 @@ export default {
   }),
   computed: {},
   methods: {
-    clickToCreateNewIssue: () => {
+    clickToCreateNewIssue: async function () {
       const newIssue = new FormData()
       const newData = {
         name: this.name,
@@ -166,7 +166,11 @@ export default {
       if (this.files.length > 0) {
         newIssue.append('data', JSON.stringify(newData))
         newIssue.append('files[]', this.files[0])
+        await this.createNewIssue(newIssue);
       }
+
+
+      await this.getIssuesByFloorPlanId()
 
       console.log(this.files)
 
@@ -193,6 +197,9 @@ export default {
           this.floor_plan = data
         }
       ).catch(err => console.log(err))
+    },
+    createNewIssue: async function (payload) {
+      await ApiClient.post(`/floor_plans/${this.$route.params.floor_plan_id}/issues`, payload).then(res => console.log(res))
     },
   },
   created() {
