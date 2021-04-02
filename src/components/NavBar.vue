@@ -44,6 +44,7 @@
           <div style="color: white">KornInspect</div>
         </v-toolbar-title>
         <v-spacer></v-spacer>
+<!--        <a href="http://localhost:8000/static/report.pdf"> test</a>-->
         <v-btn
           v-if="$route.fullPath.includes('/projects/')"
           text

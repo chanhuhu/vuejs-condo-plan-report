@@ -17,6 +17,7 @@
 <script>
 import {ApiClient} from "../plugins/axios";
 import NavBar from "../components/NavBar";
+import {mapState} from 'vuex'
 
 export default {
   name: "ReportPreview",
@@ -33,16 +34,12 @@ export default {
       })
 
     },
+
   },
   created() {
     this.createOverallReport()
   },
-  computed: {
-    reportPreviewComponent() {
-      return {template: this.templ}
-    }
-
-  }
+  computed: {}
 }
 </script>
 

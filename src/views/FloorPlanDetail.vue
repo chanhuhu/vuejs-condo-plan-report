@@ -35,14 +35,6 @@
 
             <v-text-field
               type="text"
-              v-model="description"
-              :rules="newIssueRules"
-              label="หมายเหตุ"
-              required
-            ></v-text-field>
-
-            <v-text-field
-              type="text"
               v-model="location"
               :rules="newIssueRules"
               label="ตำแหน่งจุดเสีย"

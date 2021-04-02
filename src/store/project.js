@@ -55,6 +55,12 @@ const mutations = {
   },
   setOldIssues: function (state, payload) {
     state.old_issues = payload
+  },
+  setProjectByProjectId: function (state, payload) {
+    state.project = payload
+  },
+  setProject: function (state, payload) {
+    state.project = payload
   }
 };
 
@@ -72,10 +78,16 @@ const actions = {
     }).catch(err => console.log(err))
   },
   getProject: async function ({commit}, payload) {
-    await ApiClient.get("/projects/" + payload.project_id).then(res => console.log(res))
+    await ApiClient.get("/projects/" + payload.project_id).then(res => {
+      const {data} = res
+      commit('setProjectByProjectId', data)
+    })
   },
   renameProject: async function ({commit}, payload) {
-    await ApiClient.put('/projects/' + payload.project_id, payload.updates).then(res => console.log(res))
+    await ApiClient.put('/projects/' + payload.project_id, payload.updates).then(res => {
+      const {data} = res
+      commit('setProject', data)
+    })
   },
   getFloorPlansByProjectId: async function ({commit}, payload) {
     await ApiClient.get(`/projects/${payload.project_id}/floor_plans`).then(res => {

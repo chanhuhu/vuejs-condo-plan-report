@@ -2,6 +2,11 @@
   <div>
     <NavBar/>
     <v-container class="justify-center align-center">
+
+<!--      <v-row class="ma-2 pa-2 justify-center align-center">-->
+<!--        <v-text-field label="เปลี่ยนชื่อโปรเจค" type="text" v-model="this.project.name"></v-text-field>-->
+<!--        <v-btn @click="clickToRenameProject">เปลี่ยน</v-btn>-->
+<!--      </v-row>-->
       <v-row class="ma-2 pa-2">
         <v-spacer></v-spacer>
 
@@ -62,6 +67,9 @@ export default {
     files: [],
 
     form: new FormData,
+    new_project: {
+      name: ''
+    }
 
   }),
   methods: {
@@ -70,6 +78,7 @@ export default {
       await this.$store.dispatch('project/getFloorPlansByProjectId', {
         project_id: this.$route.params.project_id
       })
+      await this.getProjectByProjectId
 
     },
     router: async function (link) {
@@ -94,14 +103,29 @@ export default {
       this.$refs.files.value = ''
       await this.load()
     },
+    getProjectByProjectId: async function () {
+      await this.$store.dispatch('project/getProject', {
+        project_id: this.$route.params.project_id
+      }).catch(err => {
+        console.log(err)
+      })
+    }
   },
   computed: {
-    ...mapActions('project', ['getFloorPlansByProjectId', 'uploadFloorPlansByProjectId']),
-    ...mapState('project', ['floor_plans'])
+    ...mapActions('project', ['getFloorPlansByProjectId', 'uploadFloorPlansByProjectId', 'renameProject']),
+    ...mapState('project', ['floor_plans', 'project'])
   },
   created() {
     this.load()
   },
+  clickToRenameProject: async function () {
+    await this.$store.dispatch('project/renameProject', {
+      project_id: this.$route.params.project_id,
+      updates: this.project.name
+
+    })
+
+  }
 
 }
 </script>
