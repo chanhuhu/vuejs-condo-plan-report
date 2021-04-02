@@ -25,7 +25,8 @@ const state = {
   },
   floor_plans: {},
   floor_plan: {},
-  issues: {},
+  issues: [],
+  old_issues: {},
   files: {}
 };
 
@@ -45,6 +46,15 @@ const mutations = {
   },
   setFloorPlans: function (state, payload) {
     state.floor_plans = payload
+  },
+  setIssues: function (state, payload) {
+    state.issues = payload
+  },
+  setFloorPlan: function (state, payload) {
+    state.floor_plan = payload
+  },
+  setOldIssues: function (state, payload) {
+    state.old_issues = payload
   }
 };
 
@@ -75,7 +85,18 @@ const actions = {
   },
   uploadFloorPlansByProjectId: async function ({commit}, payload) {
     await ApiClient.post(`/projects/${payload.project_id}/floor_plans`, payload.form).then(res => console.log(res))
+  },
+  createNewIssue: async function ({commit}, payload) {
+    await ApiClient.post(`/floor_plans/${payload.floor_plan_id}/issues`, payload.new_issue).then(res => console.log(res))
+  },
+
+  getOldIssues: async function ({commit}) {
+    await ApiClient.get('/issues').then(res => {
+      const {data} = res
+      commit('setOldIssues', data)
+    })
   }
+
 };
 
 export default {

@@ -3,10 +3,15 @@ import VueRouter from 'vue-router'
 import ListProjects from '../views/ListProjects.vue'
 import ListFloorPlans from "../views/ListFloorPlans";
 import FloorPlanDetail from "../views/FloorPlanDetail";
+import ReportPreview from "../views/ReportPreview";
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/',
+    redirect: '/projects'
+  },
   {
     path: '/projects',
     name: 'ListProjects',
@@ -21,6 +26,11 @@ const routes = [
     path: '/floor_plans/:floor_plan_id',
     name: 'FloorPlanDetail',
     component: FloorPlanDetail
+  },
+  {
+    path: '/projects/:project_id/create_overall_report',
+    name: 'ReportPreview',
+    component: ReportPreview
   }
 ]
 

@@ -32,9 +32,17 @@
       <template v-for="project in this.projects">
         <v-card :key="project.id" tile style="height: auto">
 
-          <v-card-title @click="router(`/projects/${project.id}`)" style="cursor: pointer" class="headline">
-            {{ project.name }}
-          </v-card-title>
+          <div style="cursor: pointer"
+               class="d-flex justify-space-between align-center">
+
+            <v-card-title @click="router(`/projects/${project.id}`)" class="headline">
+              ชื่อโครงการ: {{ project.name }}
+            </v-card-title>
+            <v-btn class="primary" @click="clickToPreviewReport(project.id)">
+              ดูรายงานตัวอย่าง
+            </v-btn>
+
+          </div>
 
 
         </v-card>
@@ -75,6 +83,10 @@ export default {
     },
     router: async function (link) {
       await this.$router.push(link);
+    },
+    clickToPreviewReport: async function (project_id) {
+      await this.router(`/projects/${project_id}/create_overall_report`)
+
     }
   },
   computed: {
