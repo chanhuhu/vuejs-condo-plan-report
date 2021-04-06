@@ -29,7 +29,8 @@
 
       </v-form>
 
-      <template v-for="project in this.projects">
+      <div v-if="this.projects.length === 0">ยังไม่ได้สร้างโครงการ</div>
+      <template v-else v-for="project in this.projects">
         <v-card :key="project.id" tile style="height: auto">
 
           <div style="cursor: pointer"

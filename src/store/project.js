@@ -84,10 +84,11 @@ const actions = {
     })
   },
   renameProject: async function ({commit}, payload) {
+    console.log(payload)
     await ApiClient.put('/projects/' + payload.project_id, payload.updates).then(res => {
       const {data} = res
       commit('setProject', data)
-    })
+    }).catch(err => console.log(err))
   },
   getFloorPlansByProjectId: async function ({commit}, payload) {
     await ApiClient.get(`/projects/${payload.project_id}/floor_plans`).then(res => {

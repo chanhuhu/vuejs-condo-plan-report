@@ -1,11 +1,16 @@
 <template>
-  <!--  <v-img-->
-  <!--    :src="floor_plan.image_url"-->
-  <!--    height="200px"-->
-  <!--  ></v-img>-->
   <div>
     <NavBar/>
     <v-container>
+      <v-row>
+        <v-col cols="12">
+          <v-img
+            class="d-block"
+            :src="floor_plan.image_url"
+            height="300px"
+          ></v-img>
+        </v-col>
+      </v-row>
 
       <v-form
         ref="form"
@@ -70,13 +75,18 @@
         <v-row dense>
           <v-col cols="12">
             <div>รายการแก้ไขทั้งหมดในแปลนห้อง</div>
-            <template v-for="issue in this.issues">
+            <template v-for="(issue, issueIdx) in this.issues">
 
               <v-card
                 :key="issue.id"
                 class="mx-auto mt-5"
+                style="position: relative"
               >
                 <v-col cols="12">
+                  <v-btn @click="clickToDeleteIssue(issue.id,issueIdx)" style="position: absolute;top: 0;right: 0"
+                         class="ma-2 pa-2">
+                    <v-icon color="red">mdi-delete</v-icon>
+                  </v-btn>
 
                   <div class="d-flex flex-no-wrap justify-space-between">
                     <v-avatar
@@ -147,6 +157,15 @@ export default {
   }),
   computed: {},
   methods: {
+    clickToDeleteIssue: async function (issue_id, issueIdx) {
+      this.issues.splice(issueIdx, 1)
+      await ApiClient.delete(`/issues/${issue_id}`).then(res => {
+        const {data} = res
+        console.log(data)
+      }).catch(err => console.log(err))
+
+
+    },
     clickToCreateNewIssue: async function () {
       const newIssue = new FormData()
       const newData = {

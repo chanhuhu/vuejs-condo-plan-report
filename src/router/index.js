@@ -4,6 +4,7 @@ import ListProjects from '../views/ListProjects.vue'
 import ListFloorPlans from "../views/ListFloorPlans";
 import FloorPlanDetail from "../views/FloorPlanDetail";
 import ReportPreview from "../views/ReportPreview";
+import EditFloorPlan from "../views/EditFloorPlan";
 
 Vue.use(VueRouter)
 
@@ -31,6 +32,11 @@ const routes = [
     path: '/projects/:project_id/create_overall_report',
     name: 'ReportPreview',
     component: ReportPreview
+  },
+  {
+    path: '/floor_plans/:floor_plan_id/edit',
+    name: "EditFloorPlan",
+    component: EditFloorPlan
   }
 ]
 
